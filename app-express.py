@@ -159,7 +159,9 @@ with ui.layout_columns(col_widths=[9, 3]):
 
         @render.data_frame
         def latest_data():
-            x = get_data()[-1:].T.reset_index()
+            x = get_data()
+            x.drop('Close', axis=1, inplace=True) #just to remove the close column so that it doesn't show the price of the index twice
+            x = x[-1:].T.reset_index() 
             x.columns = ["Category", "Value"]
             x["Value"] = x["Value"].apply(lambda v: f"{v:.1f}")
             return x
